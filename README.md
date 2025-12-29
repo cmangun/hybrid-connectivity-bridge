@@ -1,88 +1,112 @@
 # Hybrid Connectivity Bridge
 
 [![CI](https://github.com/cmangun/hybrid-connectivity-bridge/actions/workflows/ci.yml/badge.svg)](https://github.com/cmangun/hybrid-connectivity-bridge/actions/workflows/ci.yml)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue?style=flat-square&logo=typescript)]()
+[![Python](https://img.shields.io/badge/Python-3.11+-blue?style=flat-square&logo=python)]()
+[![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)]()
 
-Secure bridge pattern for hybrid connectivity between restricted networks and cloud services.
+Secure bridge pattern for hybrid connectivity between restricted networks and cloud.
 
-## Overview
+---
 
-This repository demonstrates a secure "handoff" pattern for moving data between trust boundaries (on-premises ↔ cloud) using signed bundles and staged transfers.
+## 🚀 Run in 60 Seconds
+
+```bash
+git clone https://github.com/cmangun/hybrid-connectivity-bridge.git
+cd hybrid-connectivity-bridge
+make demo
+```
+
+**Expected output:**
+```
+[Producer] Creating bundle: bundle_001.json
+[Producer] Signature: hmac_sha256:a3b2c1...
+[Consumer] Validating bundle_001.json
+[Consumer] ✅ Signature valid
+[Consumer] ✅ Checksum verified
+[Consumer] Processing complete
+```
+
+---
+
+## 📊 Customer Value
+
+This pattern typically delivers:
+- **Secure data transfer** across air-gapped networks
+- **100% integrity verification** (HMAC + SHA-256)
+- **Complete audit trail** for compliance requirements
+
+---
 
 ## Architecture
 
 ```
-┌─────────────────────────────────────────────────────────────────┐
-│                    On-Premises Zone                              │
-│  ┌──────────────────────────────────────────────────────────┐   │
-│  │                   TypeScript Producer                     │   │
-│  │  Source Data → Sign → Bundle → Stage to Local Folder     │   │
-│  └──────────────────────────────────────────────────────────┘   │
-└───────────────────────────────────────────────────────────────────┘
-                              │
-                              │ Secure Transfer (staged files)
-                              ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                      Cloud Zone                                  │
-│  ┌──────────────────────────────────────────────────────────┐   │
-│  │                    Python Consumer                        │   │
-│  │  Read Bundle → Verify Signature → Process → Output        │   │
-│  └──────────────────────────────────────────────────────────┘   │
-└─────────────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────┐
+│                  RESTRICTED NETWORK                          │
+│  ┌──────────────────────────────────────────────────────┐   │
+│  │                TypeScript Producer                    │   │
+│  │  ┌──────────┐  ┌──────────┐  ┌──────────────────┐   │   │
+│  │  │  Data    │─▶│  Sign    │─▶│  Write Bundle    │   │   │
+│  │  │  Source  │  │  (HMAC)  │  │  (staging/)      │   │   │
+│  │  └──────────┘  └──────────┘  └──────────────────┘   │   │
+│  └──────────────────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────────────┘
+                           │
+                    [ Secure Transfer ]
+                    [ USB / SFTP / S3 ]
+                           │
+                           ▼
+┌─────────────────────────────────────────────────────────────┐
+│                     CLOUD NETWORK                            │
+│  ┌──────────────────────────────────────────────────────┐   │
+│  │                 Python Consumer                       │   │
+│  │  ┌──────────┐  ┌──────────┐  ┌──────────────────┐   │   │
+│  │  │  Read    │─▶│  Verify  │─▶│    Process       │   │   │
+│  │  │  Bundle  │  │  (HMAC)  │  │    & Audit       │   │   │
+│  │  └──────────┘  └──────────┘  └──────────────────┘   │   │
+│  └──────────────────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────────────┘
 ```
 
-## Components
+---
 
-| Component | Language | Purpose |
-|-----------|----------|---------|
-| `bridge/ts-producer` | TypeScript | Creates signed bundles |
-| `bridge/py-consumer` | Python | Validates and processes bundles |
-| `shared/schema` | JSON Schema | Bundle format specification |
+## Security Features
 
-## Quickstart
+| Feature | Implementation |
+|---------|----------------|
+| Signatures | HMAC-SHA256 on payload |
+| Integrity | SHA-256 checksum |
+| Schema | JSON Schema validation |
+| Audit | Timestamped processing log |
 
-```bash
-# Install dependencies
-cd bridge/ts-producer && npm install && cd ../..
-cd bridge/py-consumer && pip install -r requirements.txt && cd ../..
-
-# Run demo
-make demo
-```
+---
 
 ## Bundle Format
 
 ```json
 {
-  "bundleId": "uuid",
-  "createdAt": "ISO-8601",
-  "producer": "producer-id",
-  "payload": { ... },
-  "signature": "base64-signature",
-  "checksum": "sha256-hash"
+  "id": "bundle_001",
+  "timestamp": "2024-01-15T10:30:00Z",
+  "signature": "hmac_sha256:...",
+  "checksum": "sha256:...",
+  "payload": { "data": [...] }
 }
 ```
 
-## Security Features
-
-- **Signed bundles**: HMAC signatures on all transfers
-- **Checksums**: SHA-256 integrity verification
-- **Audit trail**: Every bundle logged with correlation ID
-- **Validation**: Schema validation at boundary crossing
+---
 
 ## Next Iterations
 
-- [ ] Add asymmetric signatures (RSA/ECDSA)
-- [ ] Add S3/Azure Blob transfer adapters
-- [ ] Add retry/dead-letter handling
-- [ ] Add encryption at rest
-- [ ] Add batch processing mode
-- [ ] Add Kubernetes Job templates
+- [ ] Add encryption at rest (AES-256)
+- [ ] Add S3/Azure Blob connectors
+- [ ] Add retry with dead-letter queue
+- [ ] Add compression for large payloads
+- [ ] Add schema versioning
+
+---
 
 ## License
 
 MIT © Christopher Mangun
 
----
-
-**Portfolio**: [field-deployed-engineer.vercel.app](https://field-deployed-engineer.vercel.app/)  
-**Contact**: Christopher Mangun — Brooklyn, NY
+**Portfolio**: [field-deployed-engineer.vercel.app](https://field-deployed-engineer.vercel.app/)
