@@ -1,0 +1,21 @@
+flowchart LR
+  subgraph Restricted[Restricted Network]
+    Producer[TS Producer]
+    Sign[HMAC Sign]
+  end
+  
+  subgraph Bridge[Secure Transfer]
+    Bundle[(Bundle)]
+  end
+  
+  subgraph Cloud[Cloud Network]
+    Consumer[PY Consumer]
+    Verify[Verify]
+    Process[Process]
+  end
+  
+  Producer --> Sign
+  Sign --> Bundle
+  Bundle --> Consumer
+  Consumer --> Verify
+  Verify --> Process

@@ -1,5 +1,7 @@
 # Hybrid Connectivity Bridge
 
+![Architecture](./docs/architecture.png)
+
 [![CI](https://github.com/cmangun/hybrid-connectivity-bridge/actions/workflows/ci.yml/badge.svg)](https://github.com/cmangun/hybrid-connectivity-bridge/actions/workflows/ci.yml)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue?style=flat-square&logo=typescript)]()
 [![Python](https://img.shields.io/badge/Python-3.11+-blue?style=flat-square&logo=python)]()
