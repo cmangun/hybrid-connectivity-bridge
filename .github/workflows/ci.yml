@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test-producer:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: bridge/ts-producer
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+      - run: npm install
+      - run: npm test
+
+  test-consumer:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: bridge/py-consumer
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -r requirements.txt
+      - run: python -c "from src.consumer import Bundle; print('OK')"

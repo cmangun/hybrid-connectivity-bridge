@@ -1,0 +1,21 @@
+{
+  "name": "bridge-producer",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "dist/producer.js",
+  "scripts": {
+    "build": "tsc",
+    "produce": "tsx src/producer.ts",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "@types/uuid": "^9.0.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  }
+}

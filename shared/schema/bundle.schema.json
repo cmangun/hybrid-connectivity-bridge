@@ -1,0 +1,44 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://example.com/bundle.schema.json",
+  "title": "Transfer Bundle",
+  "description": "Schema for secure handoff bundles",
+  "type": "object",
+  "required": ["bundleId", "createdAt", "producer", "payload", "signature", "checksum"],
+  "properties": {
+    "bundleId": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Unique bundle identifier"
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO-8601 timestamp"
+    },
+    "producer": {
+      "type": "string",
+      "description": "Producer system identifier"
+    },
+    "payload": {
+      "type": "object",
+      "description": "Actual data being transferred"
+    },
+    "signature": {
+      "type": "string",
+      "description": "HMAC signature of payload"
+    },
+    "checksum": {
+      "type": "string",
+      "description": "SHA-256 checksum of payload"
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Optional metadata",
+      "properties": {
+        "version": { "type": "string" },
+        "priority": { "type": "string", "enum": ["low", "normal", "high"] }
+      }
+    }
+  }
+}

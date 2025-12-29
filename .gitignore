@@ -1,0 +1,7 @@
+-e node_modules/
+dist/
+__pycache__/
+.venv/
+staging/
+output/
+.DS_Store
