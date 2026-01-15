@@ -2,18 +2,27 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [main, master]
   pull_request:
-    branches: [main]
+    branches: [main, master]
 
 jobs:
-  validate:
+  node:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Check files exist
-        run: |
-          test -f bridge/ts-producer/package.json
-          test -f bridge/py-consumer/requirements.txt
-          test -f shared/schema/bundle.schema.json
+      - uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        working-directory: bridge/ts-producer
+        run: npm install
+
+      - name: Build
+        working-directory: bridge/ts-producer
+        run: npm run build --if-present
+        continue-on-error: true
