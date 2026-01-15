@@ -11,7 +11,7 @@ Secure bridge pattern for hybrid connectivity between restricted networks and cl
 
 ---
 
-## 🚀 Run in 60 Seconds
+## Run in 60 Seconds
 
 ```bash
 git clone https://github.com/cmangun/hybrid-connectivity-bridge.git
@@ -31,7 +31,7 @@ make demo
 
 ---
 
-## 📊 Customer Value
+## Customer Value
 
 This pattern typically delivers:
 - **Secure data transfer** across air-gapped networks
